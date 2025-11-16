@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi Social Media Downloader - Download TikTok, YouTube, Facebook Videos</title>
+    <meta name="description" content="Free Social Media Downloader - Download videos from TikTok, YouTube, Facebook, Instagram, and Twitter in HD quality">
+    <meta name="keywords" content="tiktok downloader, youtube downloader, facebook video download, instagram download, twitter video download">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --dark: #343a40;
+            --light: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, #ff0050, #25f4ee, #1da1f2, #ff0000, #e4405f, #1877f2);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        /* Platform Selector */
+        .platform-selector {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            padding: 25px;
+            background: var(--light);
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .platform-btn {
+            padding: 15px 10px;
+            border: none;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            border: 2px solid transparent;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .platform-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .platform-btn.active {
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            border-color: transparent;
+        }
+
+        .platform-btn.tiktok.active { background: #ff0050; }
+        .platform-btn.youtube.active { background: #ff0000; }
+        .platform-btn.youtube-audio.active { background: #dc3545; }
+        .platform-btn.facebook.active { background: #1877f2; }
+        .platform-btn.instagram.active { background: #e4405f; }
+        .platform-btn.twitter.active { background: #1da1f2; }
+
+        /* Input Section */
+        .input-section {
+            padding: 40px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .url-input-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .url-input {
+            width: 100%;
+            padding: 18px 25px;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .url-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .url-input::placeholder {
+            color: #999;
+        }
+
+        .download-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .download-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .download-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Result Section */
+        .result-section {
+            padding: 40px;
+            min-height: 400px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 25px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .video-info {
+            background: var(--light);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--primary);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .video-info h3 {
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .author-info {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 20px;
+            border: 3px solid var(--primary);
+        }
+
+        .author-details h4 {
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+
+        .author-details p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .video-stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .download-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .download-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .download-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary);
+        }
+
+        .download-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            border-color: var(--primary);
+        }
+
+        .quality-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            color: white;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .quality-badge.hd { background: var(--danger); }
+        .quality-badge.sd { background: var(--warning); color: black; }
+        .quality-badge.audio { background: var(--info); }
+        .quality-badge.video { background: var(--success); }
+
+        .download-card h4 {
+            margin: 15px 0;
+            color: var(--dark);
+            font-size: 1.3em;
+        }
+
+        .file-size {
+            color: #666;
+            margin: 15px 0;
+            font-size: 1.1em;
+        }
+
+        .download-link {
+            display: inline-block;
+            padding: 15px 30px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            width: 100%;
+            max-width: 200px;
+        }
+
+        .download-link:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+            color: white;
+            text-decoration: none;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: var(--danger);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border-left: 5px solid var(--danger);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.2);
+        }
+
+        .error h3 {
+            margin-bottom: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .thumbnail {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: white;
+        }
+
+        .copyright {
+            margin-top: 20px;
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .platform-selector {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .download-options {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.2em;
+            }
+            
+            .platform-selector {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            
+            .platform-btn {
+                padding: 12px 8px;
+                font-size: 12px;
+            }
+            
+            .input-section {
+                padding: 30px 20px;
+            }
+            
+            .download-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .video-stats {
+                justify-content: center;
+            }
+            
+            .stats {
+                gap: 20px;
+            }
+            
+            .stat-number {
+                font-size: 1.5em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 30px 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .platform-selector {
+                grid-template-columns: 1fr;
+            }
+            
+            .result-section {
+                padding: 20px 15px;
+            }
+            
+            .video-info {
+                padding: 20px;
+            }
+            
+            .author-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .author-avatar {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .mb-20 { margin-bottom: 20px; }
+        .mt-20 { margin-top: 20px; }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="header-content">
+                <h1>📱 Multi Social Media Downloader</h1>
+                <p>Download Videos from TikTok, YouTube, Facebook, Instagram & Twitter - 100% Free!</p>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-number">5+</span>
+                        <span class="stat-label">Platforms</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">HD</span>
+                        <span class="stat-label">Quality</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Free</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">🚀</span>
+                        <span class="stat-label">Fast</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Platform Selection -->
+        <div class="platform-selector">
+            <button class="platform-btn tiktok active" data-platform="tiktok">
+                <span>🎵</span> TikTok
+            </button>
+            <button class="platform-btn youtube" data-platform="youtube">
+                <span>📺</span> YouTube
+            </button>
+            <button class="platform-btn youtube-audio" data-platform="youtube-audio">
+                <span>🎵</span> YouTube MP3
+            </button>
+            <button class="platform-btn facebook" data-platform="facebook">
+                <span>👥</span> Facebook
+            </button>
+            <button class="platform-btn instagram" data-platform="instagram">
+                <span>📷</span> Instagram
+            </button>
+            <button class="platform-btn twitter" data-platform="twitter">
+                <span>🐦</span> Twitter
+            </button>
+        </div>
+
+        <!-- Input Section -->
+        <section class="input-section">
+            <div class="url-input-container">
+                <input type="text" class="url-input" id="videoUrl" 
+                       placeholder="Paste your video URL here... Example: https://www.youtube.com/watch?v=..." autocomplete="off">
+            </div>
+            <button class="download-btn" id="downloadBtn">
+                <span>🚀 Download Now</span>
+            </button>
+        </section>
+
+        <!-- Result Section -->
+        <section class="result-section" id="resultSection">
+            <div class="loading hidden" id="loading">
+                <div class="spinner"></div>
+                <h3>Processing Your Video...</h3>
+                <p>Please wait while we prepare your download</p>
+            </div>
+            
+            <div id="resultContent"></div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <h3>Multi Social Media Downloader</h3>
+                <p>Download your favorite videos from all major social media platforms quickly and easily.</p>
+                
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms of Service</a>
+                    <a href="#" class="footer-link">Contact</a>
+                    <a href="#" class="footer-link">FAQ</a>
+                </div>
+                
+                <div class="copyright">
+                    &copy; 2024 Multi Social Media Downloader. All rights reserved.
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Configuration
+        const APIS = {
+            tiktok: 'https://api.hanggts.xyz/download/tiktok-v2?url=',
+            youtube: 'https://api.hanggts.xyz/download/ytdl?url=',
+            'youtube-audio': 'https://api.hanggts.xyz/download/ytmp3?url=',
+            facebook: 'https://api.hanggts.xyz/download/facebook?url=',
+            instagram: 'https://api.hanggts.xyz/download/instagram?url=',
+            twitter: 'https://api.hanggts.xyz/download/twitter?url='
+        };
+
+        // Global Variables
+        let currentPlatform = 'tiktok';
+
+        // DOM Elements
+        const platformBtns = document.querySelectorAll('.platform-btn');
+        const videoUrlInput = document.getElementById('videoUrl');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const resultSection = document.getElementById('resultSection');
+        const loading = document.getElementById('loading');
+        const resultContent = document.getElementById('resultContent');
+
+        // Platform Selection
+        platformBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                platformBtns.forEach(b => b.classList.remove('active'));
+                
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                // Update current platform
+                currentPlatform = btn.dataset.platform;
+                
+                // Update placeholder text
+                updatePlaceholder();
+            });
+        });
+
+        function updatePlaceholder() {
+            const platformNames = {
+                'tiktok': 'TikTok',
+                'youtube': 'YouTube Video',
+                'youtube-audio': 'YouTube (for MP3)',
+                'facebook': 'Facebook',
+                'instagram': 'Instagram',
+                'twitter': 'Twitter'
+            };
+            
+            videoUrlInput.placeholder = `Paste ${platformNames[currentPlatform]} URL here... Example: https://${currentPlatform === 'youtube-audio' ? 'www.youtube.com' : currentPlatform}.com/...`;
+        }
+
+        // Download Button Handler
+        downloadBtn.addEventListener('click', downloadVideo);
+
+        // Enter Key Handler
+        videoUrlInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                downloadVideo();
+            }
+        });
+
+        // Auto-detect Platform from URL
+        videoUrlInput.addEventListener('input', function(e) {
+            const url = e.target.value.toLowerCase();
+            
+            if (url.includes('tiktok')) {
+                setActivePlatform('tiktok');
+            } else if (url.includes('youtube') || url.includes('youtu.be')) {
+                setActivePlatform('youtube');
+            } else if (url.includes('facebook') || url.includes('fb.com')) {
+                setActivePlatform('facebook');
+            } else if (url.includes('instagram')) {
+                setActivePlatform('instagram');
+            } else if (url.includes('twitter') || url.includes('x.com')) {
+                setActivePlatform('twitter');
+            }
+        });
+
+        function setActivePlatform(platform) {
+            platformBtns.forEach(btn => {
+                if (btn.dataset.platform === platform) {
+                    btn.classList.add('active');
+                    currentPlatform = platform;
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            updatePlaceholder();
+        }
+
+        // Main Download Function
+        async function downloadVideo() {
+            const videoUrl = videoUrlInput.value.trim();
+            
+            if (!videoUrl) {
+                showError('Please enter a video URL');
+                return;
+            }
+
+            if (!isValidUrl(videoUrl)) {
+                showError('Please enter a valid URL');
+                return;
+            }
+
+            // Show loading state
+            showLoading();
+            downloadBtn.disabled = true;
+            downloadBtn.innerHTML = '<span>⏳ Processing...</span>';
+
+            try {
+                const apiUrl = `${APIS[currentPlatform]}${encodeURIComponent(videoUrl)}`;
+                console.log('Fetching from:', apiUrl);
+                
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('API Response:', data);
+
+                if (data.status === true) {
+                    displayResults(data);
+                } else {
+                    throw new Error(data.message || data.result?.msg || 'Download failed');
+                }
+
+            } catch (error) {
+                console.error('Download error:', error);
+                showError(`Error: ${error.message}<br>Please check the URL and try again.`);
+            } finally {
+                hideLoading();
+                downloadBtn.disabled = false;
+                downloadBtn.innerHTML = '<span>🚀 Download Now</span>';
+            }
+        }
+
+        function isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+
+        function showLoading() {
+            loading.classList.remove('hidden');
+            resultContent.innerHTML = '';
+            resultContent.classList.remove('fade-in');
+        }
+
+        function hideLoading() {
+            loading.classList.add('hidden');
+        }
+
+        function showError(message) {
+            resultContent.innerHTML = `
+                <div class="error fade-in">
+                    <h3>❌ Error</h3>
+                    <p>${message}</p>
+                </div>
+            `;
+            resultContent.classList.add('fade-in');
+        }
+
+        // Display Results Based on Platform
+        function displayResults(data) {
+            let html = '';
+            
+            try {
+                switch(currentPlatform) {
+                    case 'tiktok':
+                        html = displayTikTokResults(data);
+                        break;
+                    case 'youtube':
+                        html = displayYouTubeResults(data);
+                        break;
+                    case 'youtube-audio':
+                        html = displayYouTubeAudioResults(data);
+                        break;
+                    case 'facebook':
+                        html = displayFacebookResults(data);
+                        break;
+                    case 'twitter':
+                        html = displayTwitterResults(data);
+                        break;
+                    case 'instagram':
+                        html = displayInstagramResults(data);
+                        break;
+                    default:
+                        html = '<div class="error">Platform not supported</div>';
+                }
+            } catch (error) {
+                console.error('Display error:', error);
+                html = `
+                    <div class="error">
+                        <h3>❌ Display Error</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+
+            resultContent.innerHTML = html;
+            resultContent.classList.add('fade-in');
+        }
+
+        // Platform-specific Display Functions
+        function displayTikTokResults(data) {
+            const tiktokData = data.result.data;
+            const timestamp = Date.now();
+            
+            return `
+                <div class="video-info fade-in">
+                    <h3>${tiktokData.title || 'TikTok Video'}</h3>
+                    
+                    <div class="author-info">
+                        <img src="${tiktokData.author.avatar}" class="author-avatar" alt="Author Avatar">
+                        <div class="author-details">
+                            <h4>${tiktokData.author.nickname}</h4>
+                            <p>@${tiktokData.author.unique_id}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="video-stats">
+                        <div class="stat">
+                            <span>❤️</span>
+                            <span>${formatNumber(tiktokData.digg_count)}</span>
+                        </div>
+                        <div class="stat">
+                            <span>💬</span>
+                            <span>${formatNumber(tiktokData.comment_count)}</span>
+                        </div>
+                        <div class="stat">
+                            <span>🔄</span>
+                            <span>${formatNumber(tiktokData.share_count)}</span>
+                        </div>
+                        <div class="stat">
+                            <span>▶️</span>
+                            <span>${formatNumber(tiktokData.play_count)}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="download-options">
+                    ${tiktokData.hdplay ? `
+                    <div class="download-card fade-in">
+                        <span class="quality-badge hd">HD Quality</span>
+                        <h4>High Definition Video</h4>
+                        <p class="file-size">${formatFileSize(tiktokData.hd_size)}</p>
+                        <button class="download-link" onclick="downloadFile('${tiktokData.hdplay}', 'tiktok_${tiktokData.id}_hd_${timestamp}.mp4')">
+                            📥 Download HD
+                        </button>
+                    </div>
+                    ` : ''}
+
+                    <div class="download-card fade-in">
+                        <span class="quality-badge sd">Standard</span>
+                        <h4>Normal Quality Video</h4>
+                        <p class="file-size">${formatFileSize(tiktokData.size)}</p>
+                        <button class="download-link" onclick="downloadFile('${tiktokData.play}', 'tiktok_${tiktokData.id}_${timestamp}.mp4')">
+                            📥 Download
+                        </button>
+                    </div>
+
+                    ${tiktokData.music ? `
+                    <div class="download-card fade-in">
+                        <span class="quality-badge audio">Audio</span>
+                        <h4>Music Only</h4>
+                        <p class="file-size">MP3 Format</p>
+                        <button class="download-link" onclick="downloadFile('${tiktokData.music}', 'tiktok_${tiktokData.id}_music_${timestamp}.mp3')">
+                            🎵 Download Music
+                        </button>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        function displayYouTubeResults(data) {
+            const timestamp = Date.now();
+            const result = data.result;
+            
+            return `
+                <div class="video-info fade-in">
+                    <h3>${result.title}</h3>
+                    <p>YouTube Video Download</p>
+                </div>
+                
+                <div class="download-options">
+                    ${result.mp4 ? `
+                    <div class="download-card fade-in">
+                        <span class="quality-badge video">MP4 Video</span>
+                        <h4>Video Download</h4>
+                        <p class="file-size">Best Quality Available</p>
+                        <button class="download-link" onclick="downloadFile('${result.mp4}', 'youtube_${timestamp}.mp4')">
+                            🎥 Download Video
+                        </button>
+                    </div>
+                    ` : ''}
+                    
+                    ${result.mp3 ? `
+                    <div class="download-card fade-in">
+                        <span class="quality-badge audio">MP3 Audio</span>
+                        <h4>Audio Only</h4>
+                        <p class="file-size">High Quality Audio</p>
+                        <button class="download-link" onclick="downloadFile('${result.mp3}', 'youtube_${timestamp}.mp3')">
+                            🎵 Download MP3
+                        </button>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        function displayYouTubeAudioResults(data) {
+            const timestamp = Date.now();
+            const downloadUrl = data.result?.mp3 || data.result?.url || data.url;
+            
+            return `
+                <div class="video-info fade-in">
+                    <h3>YouTube Audio</h3>
+                    <p>Download audio from YouTube video</p>
+                </div>
+                
+                <div class="download-options">
+                    <div class="download-card fade-in">
+                        <span class="quality-badge audio">MP3 Format</span>
+                        <h4>High Quality Audio</h4>
+                        <p class="file-size">Best Audio Quality</p>
+                        <button class="download-link" onclick="downloadFile('${downloadUrl}', 'youtube_audio_${timestamp}.mp3')">
+                            🎵 Download MP3
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function displayFacebookResults(data) {
+            const timestamp = Date.now();
+            const info = data.result.info || {};
+            const media = data.result.media || {};
+            
+            return `
+                <div class="video-info fade-in">
+                    <h3>Facebook Video</h3>
+                    <p>${info.title ? info.title.split('\n')[0] : 'Facebook Video'}</p>
+                    
+                    ${media.thumbnail ? `
+                    <img src="${media.thumbnail}" class="thumbnail" alt="Video thumbnail">
+                    ` : ''}
+                    
+                    <div class="video-stats">
+                        ${info.duration ? `
+                        <div class="stat">
+                            <span>⏱️</span>
+                            <span>${(parseInt(info.duration) / 1000).toFixed(1)}s</span>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+                
+                <div class="download-options">
+                    ${media.video_hd ? `
+                    <div class="download-card fade-in">
+                        <span class="quality-badge hd">HD Quality</span>
+                        <h4>High Definition</h4>
+                        <p class="file-size">Best Quality</p>
+                        <button class="download-link" onclick="downloadFile('${media.video_hd}', 'facebook_hd_${timestamp}.mp4')">
+                            🎥 Download HD
+                        </button>
+                    </div>
+                    ` : ''}
+                    
+                    ${media.video_sd ? `
+                    <div class="download-card fade-in">
+                        <span class="quality-badge sd">Standard</span>
+                        <h4>Normal Quality</h4>
+                        <p class="file-size">Standard Definition</p>
+                        <button class="download-link" onclick="downloadFile('${media.video_sd}', 'facebook_sd_${timestamp}.mp4')">
+                            🎥 Download SD
+                        </button>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        function displayTwitterResults(data) {
+            const timestamp = Date.now();
+            const downloadUrl = data.result?.url || data.result?.video_url || data.url;
+            
+            return `
+                <div class="video-info fade-in">
+                    <h3>Twitter Video</h3>
+                    <p>Download video from Twitter</p>
+                </div>
+                
+                <div class="download-options">
+                    <div class="download-card fade-in">
+                        <span class="quality-badge video">Video</span>
+                        <h4>Twitter Video</h4>
+                        <p class="file-size">Best Quality Available</p>
+                        <button class="download-link" onclick="downloadFile('${downloadUrl}', 'twitter_${timestamp}.mp4')">
+                            🐦 Download Video
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function displayInstagramResults(data) {
+            const timestamp = Date.now();
+            const downloadUrl = data.result?.url || data.result?.video_url || data.url;
+            
+            return `
+                <div class="video-info fade-in">
+                    <h3>Instagram Content</h3>
+                    <p>Download from Instagram</p>
+                </div>
+                
+                <div class="download-options">
+                    <div class="download-card fade-in">
+                        <span class="quality-badge video">Media</span>
+                        <h4>Instagram Content</h4>
+                        <p class="file-size">Available Content</p>
+                        <button class="download-link" onclick="downloadFile('${downloadUrl}', 'instagram_${timestamp}.mp4')">
+                            📷 Download
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Utility Functions
+        async function downloadFile(url, filename) {
+            const button = event.target;
+            const originalText = button.textContent;
+            
+            try {
+                button.textContent = '⏳ Downloading...';
+                button.disabled = true;
+
+                // Create a temporary anchor element to trigger download
+                const response = await fetch(url);
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                URL.revokeObjectURL(blobUrl);
+
+                button.textContent = '✅ Downloaded!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                }, 2000);
+
+            } catch (error) {
+                console.error('Download error:', error);
+                
+                // Fallback: direct download
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.target = '_blank';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+                button.textContent = '🌐 Opened in Browser';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                }, 2000);
+            }
+        }
+
+        function formatNumber(num) {
+            if (!num) return '0';
+            num = parseInt(num);
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1) + 'M';
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'K';
+            }
+            return num.toString();
+        }
+
+        function formatFileSize(bytes) {
+            if (!bytes || bytes === 0) return 'Unknown size';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Initialize
+        updatePlaceholder();
+        console.log('Multi Social Media Downloader Initialized!');
+
+    </script>
+</body>
+  </html>
