@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ur">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Multi Downloader — YouTube, TikTok, Facebook & More | youtube-aio-downloader.work.gd</title>
+  <meta name="description" content="Fast, free multi-downloader for YouTube, TikTok, Facebook, Instagram and more. No installs — simple paste URL and download." />
+  <meta name="keywords" content="youtube downloader, tiktok downloader, video downloader, instagram downloader, free downloader" />
+  <link rel="canonical" href="https://youtube-aio-downloader.work.gd/" />
+  <link rel="manifest" href="/manifest.json" />
+
+  <!-- Open Graph / Social previews -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Multi Downloader — YouTube, TikTok, Facebook & More" />
+  <meta property="og:description" content="Fast, free multi-downloader for YouTube, TikTok, Facebook, Instagram and more. No installs — simple paste URL and download." />
+  <meta property="og:url" content="https://youtube-aio-downloader.work.gd/" />
+  <meta property="og:image" content="https://youtube-aio-downloader.work.gd/assets/logo.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Multi Downloader — YouTube, TikTok, Facebook & More" />
+  <meta name="twitter:description" content="Fast, free multi-downloader for YouTube, TikTok, Facebook, Instagram and more." />
+  <meta name="twitter:image" content="https://youtube-aio-downloader.work.gd/assets/logo.png" />
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Multi Downloader",
+    "url": "https://youtube-aio-downloader.work.gd/",
+    "description": "Fast, free multi-downloader for YouTube, TikTok, Facebook, Instagram and more."
+  }
+  </script>
+
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --accent:#06b6d4; --muted:#9aa8b2; --text:#e6eef3;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,Arial;color:var(--text);background:linear-gradient(180deg,#071021 0%, #0b1220 100%);-webkit-font-smoothing:antialiased}
+    .wrap{max-width:980px;margin:28px auto;padding:20px}
+    header{display:flex;align-items:center;gap:14px}
+    .logo{width:64px;height:64px;border-radius:10px;background:#0a1220;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent);font-size:20px}
+    h1{margin:0;font-size:20px}
+    p.lead{color:var(--muted);margin:6px 0 18px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:18px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.04));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);}
+    .card h3{margin:0 0 10px;font-size:16px}
+    .card p{margin:0;color:var(--muted);font-size:13px}
+    .btn{display:inline-block;margin-top:12px;padding:10px 12px;border-radius:8px;background:var(--accent);color:#02121a;text-decoration:none;font-weight:600}
+    footer{color:var(--muted);font-size:13px;margin-top:28px;text-align:center}
+    .top-links{margin-left:auto;font-size:13px}
+    a.inline{color:var(--accent);text-decoration:none}
+    @media (max-width:520px){.wrap{padding:12px} h1{font-size:18px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div class="logo">MD</div>
+      <div>
+        <h1>Multi Downloader</h1>
+        <p class="lead">Download videos and audio from YouTube, TikTok, Facebook, Instagram and more — fast and without installs.</p>
+      </div>
+      <nav class="top-links" aria-label="top links">
+        <a class="inline" href="/sitemap.xml">Sitemap</a>
+      </nav>
+    </header>
+
+    <!-- Search / URL input (UI only) -->
+    <section style="margin-top:18px" aria-labelledby="tool-title">
+      <div class="card" id="tool-title">
+        <h3>Paste video URL to start</h3>
+        <p>Copy a video link from YouTube, TikTok, Facebook etc and paste it below. (This is the UI; connect your backend/script for processing.)</p>
+        <form id="urlForm" onsubmit="return false" style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          <input id="videoUrl" type="url" placeholder="https://..." style="flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--text)" />
+          <button class="btn" id="goBtn" onclick="openDetect()">Detect</button>
+        </form>
+        <p style="color:var(--muted);font-size:13px;margin-top:10px">Quick links:</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+          <a class="card" style="padding:8px 12px;text-decoration:none" href="/youtube">YouTube downloader</a>
+          <a class="card" style="padding:8px 12px;text-decoration:none" href="/tiktok">TikTok downloader</a>
+          <a class="card" style="padding:8px 12px;text-decoration:none" href="/facebook">Facebook downloader</a>
+          <a class="card" style="padding:8px 12px;text-decoration:none" href="/instagram">Instagram downloader</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature grid -->
+    <section class="grid" aria-label="features">
+      <article class="card">
+        <h3>Fast downloads</h3>
+        <p>High speed downloads with multi-thread support (depends on backend).</p>
+        <a href="/youtube" class="btn">Open YouTube tool</a>
+      </article>
+
+      <article class="card">
+        <h3>Audio & Video</h3>
+        <p>Choose MP3/MP4, quality options and subtitles (if available).</p>
+        <a href="/tiktok" class="btn">Open TikTok tool</a>
+      </article>
+
+      <article class="card">
+        <h3>Privacy first</h3>
+        <p>We don't store user files — downloads are processed on request (configure your processing rules).</p>
+        <a href="/facebook" class="btn">Open Facebook tool</a>
+      </article>
+
+      <article class="card">
+        <h3>Lightweight UI</h3>
+        <p>Simple interface optimized for mobile and desktop browsers.</p>
+        <a href="/instagram" class="btn">Open Instagram tool</a>
+      </article>
+    </section>
+
+    <!-- Ads placeholder (add your ad code here after approval) -->
+    <div style="margin-top:18px">
+      <!--
+        Place ad network code here.
+        Example (Adsterra/Propeller): paste script tag from provider.
+        Do not paste malicious 'intent://' redirect scripts.
+      -->
+    </div>
+
+    <footer>
+      <div>© <strong>Multi Downloader</strong> — youtube-aio-downloader.work.gd</div>
+      <div style="margin-top:6px"><small>Made with care. Read our <a class="inline" href="/privacy">Privacy</a> and <a class="inline" href="/terms">Terms</a>.</small></div>
+    </footer>
+  </main>
+
+  <script>
+    function openDetect(){
+      const url = document.getElementById('videoUrl').value.trim();
+      if(!url){ alert('Please paste a video link first'); return; }
+      // simple router by domain
+      try {
+        const u = new URL(url);
+        if(u.hostname.includes('youtube')) location.href = '/youtube/?u=' + encodeURIComponent(url);
+        else if(u.hostname.includes('tiktok')) location.href = '/tiktok/?u=' + encodeURIComponent(url);
+        else if(u.hostname.includes('facebook')) location.href = '/facebook/?u=' + encodeURIComponent(url);
+        else location.href = '/youtube/?u=' + encodeURIComponent(url);
+      } catch(e){
+        alert('Invalid URL');
+      }
+    }
+  </script>
+</body>
+</html>
